@@ -34,8 +34,29 @@
    *_*_X64_NASMB_FLAGS = -I$(WORKSPACE)/UefiCpuPkg/ResetVector/Vtf0/
 
 [Pcd]
-  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecPageTablesBase
-  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecPageTablesSize
-
   gUefiOvmfPkgTokenSpaceGuid.PcdXenPvhStartOfDayStructPtr
   gUefiOvmfPkgTokenSpaceGuid.PcdXenPvhStartOfDayStructPtrSize
+
+
+  gUefiCpuPkgTokenSpaceGuid.PcdSevEsWorkAreaBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecPageTablesBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecPageTablesSize
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecPeiTempRamBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecPeiTempRamSize
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfWorkAreaBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfWorkAreaSize
+  gUefiOvmfPkgTokenSpaceGuid.PcdCfvBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdCfvRawDataOffset
+  gUefiOvmfPkgTokenSpaceGuid.PcdCfvRawDataSize
+  gUefiOvmfPkgTokenSpaceGuid.PcdBfvBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdBfvRawDataOffset
+  gUefiOvmfPkgTokenSpaceGuid.PcdBfvRawDataSize
+
+[FixedPcd]
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfCpuidBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfCpuidSize
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPeiMemFvBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdSevLaunchSecretBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdSevLaunchSecretSize
+  gUefiOvmfPkgTokenSpaceGuid.PcdQemuHashTableBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdQemuHashTableSize

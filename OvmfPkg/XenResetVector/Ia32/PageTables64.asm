@@ -3,8 +3,13 @@
 ; Sets the CR3 register for 64-bit paging
 ;
 ; Copyright (c) 2008 - 2013, Intel Corporation. All rights reserved.<BR>
-; Copyright (c) 2019, Citrix Systems, Inc.
-; SPDX-License-Identifier: BSD-2-Clause-Patent
+; This program and the accompanying materials
+; are licensed and made available under the terms and conditions of the BSD License
+; which accompanies this distribution.  The full text of the license may be found at
+; http://opensource.org/licenses/bsd-license.php
+;
+; THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+; WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 ;
 ;------------------------------------------------------------------------------
 
@@ -38,6 +43,13 @@ BITS    32
 ; If SEV is disabled then EAX will be zero.
 ;
 CheckSevFeature:
+    mov    ecx, SEV_ES_WORK_AREA_SIZE
+    mov    eax, SEV_ES_WORK_AREA
+ClearSevEsWorkArea:
+    mov    byte [eax], 0
+    inc    eax
+    loop   ClearSevEsWorkArea
+
     ; Check if we have a valid (0x8000_001F) CPUID leaf
     mov       eax, 0x80000000
     cpuid
@@ -62,12 +74,36 @@ CheckSevFeature:
     rdmsr
     bt        eax, 0
     jnc       NoSev
+    ; Set the work area header to indicate that the SEV is enabled
+    mov     byte[WORK_AREA_GUEST_TYPE], 1
 
+    ; Save the SevStatus MSR value in the workarea
+    mov     [SEV_ES_WORK_AREA_STATUS_MSR], eax
+    mov     [SEV_ES_WORK_AREA_STATUS_MSR + 4], edx
+
+
+GetSevEncBit:
     ; Get pte bit position to enable memory encryption
     ; CPUID Fn8000_001F[EBX] - Bits 5:0
     ;
+    and       ebx, 0x3f
     mov       eax, ebx
-    and       eax, 0x3f
+
+    ; The encryption bit position is always above 31
+    sub       ebx, 32
+    jns       SevSaveMask
+
+SevEncBitLowHlt:
+    cli
+    hlt
+    jmp       SevEncBitLowHlt
+
+SevSaveMask;
+    xor       edx, edx
+    bts       edx, ebx
+
+    mov       dword[SEV_ES_WORK_AREA_ENC_MASK], 0
+    mov       dword[SEV_ES_WORK_AREA_ENC_MASK + 4], edx
     jmp       SevExit
 
 NoSev:
