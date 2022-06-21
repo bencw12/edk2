@@ -2,7 +2,8 @@
 ; @file
 ; Sets the CR3 register for 64-bit paging
 ;
-; Copyright (c) 2008 - 2013, Intel Corporation. All rights reserved.<BR>
+; Copyright (c) 2019, Citrix Systems, Inc.
+; SPDX-License-Identifier: BSD-2-Clause-Patent
 ; This program and the accompanying materials
 ; are licensed and made available under the terms and conditions of the BSD License
 ; which accompanies this distribution.  The full text of the license may be found at
