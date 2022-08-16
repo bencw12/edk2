@@ -11,6 +11,10 @@
 BITS    32
 
 xenPVHMain:
+
+    mov     al, 0x30
+    mov     dx, 0x80
+    out     dx, al
     ;
     ; 'BP' to indicate boot-strap processor
     ;
