@@ -27,6 +27,9 @@ BITS    16
 ; @return         None  This routine jumps to SEC and does not return
 ;
 Main16:
+    mov     al, 0x30
+    mov     dx, 0x80
+    out     dx, al
     OneTimeCall EarlyInit16
 
     ;
