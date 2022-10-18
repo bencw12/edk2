@@ -95,7 +95,7 @@ QemuFwCfgInitialize (
     // If SEV is enabled then we do not support DMA operations in PEI phase.
     // This is mainly because DMA in SEV guest requires using bounce buffer
     // (which need to allocate dynamic memory and allocating a PAGE size'd
-    // buffer can be challenge in PEI phase)
+    // buffer can be challenge in PEI phase) BCWH
     //
     if (MemEncryptSevIsEnabled ()) {
       DEBUG ((DEBUG_INFO, "SEV: QemuFwCfg fallback to IO Port interface.\n"));

@@ -171,6 +171,7 @@ QemuLoadLegacyImage (
   DEBUG ((DEBUG_INFO, "Reading kernel image ..."));
   QemuFwCfgSelectItem (QemuFwCfgItemKernelData);
   QemuFwCfgReadBytes (KernelSize, LoadedImage->KernelBuf);
+  DEBUG ((DEBUG_INFO, "Kernel load addr: 0x%p\n", (VOID *)LoadedImage->KernelBuf));
   DEBUG ((DEBUG_INFO, " [done]\n"));
 
   QemuFwCfgSelectItem (QemuFwCfgItemCommandLineSize);
@@ -358,6 +359,7 @@ QemuLoadKernelImage (
                   );
   switch (Status) {
     case EFI_SUCCESS:
+      DEBUG((DEBUG_INFO, "Load kernel success!\n"));
       break;
 
     case EFI_NOT_FOUND:
@@ -389,6 +391,7 @@ QemuLoadKernelImage (
       // The image is not natively supported or cross-type supported. Let's try
       // loading it using the loader that parses the bzImage metadata directly.
       //
+      DEBUG((DEBUG_INFO, "Load legacy image\n"));
       Status = QemuLoadLegacyImage (&KernelImageHandle);
       if (EFI_ERROR (Status)) {
         DEBUG ((

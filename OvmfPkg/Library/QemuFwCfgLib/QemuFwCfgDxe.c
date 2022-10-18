@@ -89,7 +89,7 @@ QemuFwCfgInitialize (
   if (mQemuFwCfgDmaSupported && (MemEncryptSevIsEnabled () || (MemEncryptTdxIsEnabled ()))) {
     EFI_STATUS  Status;
 
-    //
+    // BCWH
     // IoMmuDxe driver must have installed the IOMMU protocol. If we are not
     // able to locate the protocol then something must have gone wrong.
     //
@@ -413,11 +413,13 @@ InternalQemuFwCfgDmaBytes (
 
   //
   // When SEV or TDX is enabled, map Buffer to DMA address before issuing the DMA
-  // request
+  // request BCWH ADD DEBUG HERE TO SEE IF THIS IS WHERE KERNEL IS LOADED
   //
   if (MemEncryptSevIsEnabled () || MemEncryptTdxIsEnabled ()) {
     VOID                  *AccessBuffer;
     EFI_PHYSICAL_ADDRESS  DataBufferAddress;
+
+    DEBUG((DEBUG_INFO, "SEV FWCFG DMA - SIZE: %d\n", Size));
 
     //
     // Allocate DMA Access buffer

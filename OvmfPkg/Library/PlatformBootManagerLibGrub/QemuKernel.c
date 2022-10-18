@@ -20,7 +20,7 @@ TryRunningQemuKernel (
 {
   EFI_STATUS  Status;
   EFI_HANDLE  KernelImageHandle;
-
+  DEBUG((DEBUG_INFO, "QemuLoadKernelImage BCWH\n"));
   Status = QemuLoadKernelImage (&KernelImageHandle);
   if (EFI_ERROR (Status)) {
     return Status;
@@ -39,6 +39,7 @@ TryRunningQemuKernel (
   //
   // Start the image.
   //
+  DEBUG((DEBUG_INFO, "QemuStartKernelImage BCWH\n"));
   Status = QemuStartKernelImage (&KernelImageHandle);
   if (EFI_ERROR (Status)) {
     DEBUG ((

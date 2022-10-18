@@ -937,6 +937,7 @@ PeCoffLoaderRelocateImage (
   UINT32                               TeStrippedOffset;
 
   ASSERT (ImageContext != NULL);
+  DEBUG((DEBUG_INFO,"Relocate image\n"));
 
   //
   // Assume success
@@ -950,6 +951,7 @@ PeCoffLoaderRelocateImage (
     // Applies additional environment specific actions to relocate fixups
     // to a PE/COFF image if needed
     PeCoffLoaderRelocateImageExtraAction (ImageContext);
+    DEBUG((DEBUG_INFO,"No relocation entries\n"));
     return RETURN_SUCCESS;
   }
 
@@ -1352,6 +1354,8 @@ PeCoffLoaderLoadImage (
     if ((Size == 0) || (Size > Section->SizeOfRawData)) {
       Size = (UINTN)Section->SizeOfRawData;
     }
+
+    DEBUG((DEBUG_INFO, "Read section of image\n"));
 
     //
     // Compute sections address

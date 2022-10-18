@@ -361,6 +361,8 @@ StubFileRead (
 
   StubFile = STUB_FILE_FROM_FILE (This);
 
+  DEBUG((DEBUG_INFO, "Reading file from blob\n"));
+
   //
   // Scanning the root directory?
   //
@@ -392,6 +394,7 @@ StubFileRead (
   // Reading a file.
   //
   Blob = &mKernelBlob[StubFile->BlobType];
+
   if (StubFile->Position > Blob->Size) {
     return EFI_DEVICE_ERROR;
   }
@@ -400,6 +403,9 @@ StubFileRead (
   if (*BufferSize > Left) {
     *BufferSize = (UINTN)Left;
   }
+
+  DEBUG((DEBUG_INFO, "Reading file from %s blob, size %d\n", Blob->Name, *BufferSize));
+  DEBUG((DEBUG_INFO, "Reading from %p to 0x%p\n", (VOID *)Blob->Data, (VOID *)Buffer));
 
   if (Blob->Data != NULL) {
     CopyMem (Buffer, Blob->Data + StubFile->Position, *BufferSize);
@@ -984,6 +990,7 @@ FetchBlob (
     ));
 
   ChunkData = Blob->Data;
+
   for (Idx = 0; Idx < ARRAY_SIZE (Blob->FwCfgItem); Idx++) {
     if (Blob->FwCfgItem[Idx].DataKey == 0) {
       break;
@@ -991,11 +998,13 @@ FetchBlob (
 
     QemuFwCfgSelectItem (Blob->FwCfgItem[Idx].DataKey);
 
+    //BCWH load blob in 1MB chunks
     Left = Blob->FwCfgItem[Idx].Size;
     while (Left > 0) {
       UINT32  Chunk;
 
       Chunk = (Left < SIZE_1MB) ? Left : SIZE_1MB;
+      DEBUG((DEBUG_INFO, "Reading %s from fwcfg to 0x%p\n", Blob->Name, (VOID *)ChunkData));
       QemuFwCfgReadBytes (Chunk, ChunkData + Blob->FwCfgItem[Idx].Size - Left);
       Left -= Chunk;
       DEBUG ((
@@ -1056,7 +1065,7 @@ QemuKernelLoaderFsDxeEntrypoint (
   }
 
   //
-  // Fetch all blobs.
+  // Fetch all blobs. BCWH
   //
   for (BlobType = 0; BlobType < KernelBlobTypeMax; ++BlobType) {
     CurrentBlob = &mKernelBlob[BlobType];

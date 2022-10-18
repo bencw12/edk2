@@ -695,7 +695,6 @@ GetFileBufferByFilePath (
             FreePool (ImageBuffer);
             *AuthenticationStatus = 0;
           }
-
           ImageBuffer = NULL;
           Status      = FwVol->ReadFile (
                                  FwVol,
@@ -817,7 +816,9 @@ GetFileBufferByFilePath (
                 // Read the file into the buffer we allocated
                 //
                 ImageBufferSize = (UINTN)FileInfo->FileSize;
+                DEBUG((DEBUG_INFO, "StubFileRead\n"));
                 Status          = FileHandle->Read (FileHandle, &ImageBufferSize, ImageBuffer);
+                DEBUG((DEBUG_INFO, "StubFileRead\n"));
               }
             }
           }

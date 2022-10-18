@@ -19,6 +19,7 @@
 //
 
 /**
+
   Download the kernel, the initial ramdisk, and the kernel command line from
   QEMU's fw_cfg. Construct a minimal SimpleFileSystem that contains the two
   image files, and load and start the kernel from it.
@@ -61,6 +62,7 @@ TryRunningQemuKernel (
   //
   // Start the image.
   //
+  DEBUG((DEBUG_INFO, "Start kernel image BCWH\n"));
   Status = QemuStartKernelImage (&KernelImageHandle);
   if (EFI_ERROR (Status)) {
     DEBUG ((

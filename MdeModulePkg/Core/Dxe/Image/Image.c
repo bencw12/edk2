@@ -323,6 +323,8 @@ CoreReadImageFile (
     *ReadSize = 0;
   }
 
+  DEBUG((DEBUG_INFO, "Copying from %p to %p\n", (VOID *)FHand->Source + Offset, (VOID *)Buffer));
+
   CopyMem (Buffer, (CHAR8 *)FHand->Source + Offset, *ReadSize);
   return EFI_SUCCESS;
 }
@@ -739,6 +741,7 @@ CoreLoadPeImage (
   //
   // Load the image from the file into the allocated memory
   //
+  DEBUG((DEBUG_INFO, "BCWH PeCoffLoaderLoadImage"));
   Status = PeCoffLoaderLoadImage (&Image->ImageContext);
   if (EFI_ERROR (Status)) {
     goto Done;
@@ -782,12 +785,20 @@ CoreLoadPeImage (
   //
   Image->EntryPoint = (EFI_IMAGE_ENTRY_POINT)(UINTN)Image->ImageContext.EntryPoint;
 
+  DEBUG((DEBUG_INFO, "Image entry point: %p\n", (VOID *)Image->EntryPoint));
+
   //
   // Fill in the image information for the Loaded Image Protocol
   //
   Image->Type               = Image->ImageContext.ImageType;
   Image->Info.ImageBase     = (VOID *)(UINTN)Image->ImageContext.ImageAddress;
+
+  DEBUG((DEBUG_INFO, "Image base: %p\n", (VOID *)Image->Info.ImageBase));
+
   Image->Info.ImageSize     = Image->ImageContext.ImageSize;
+
+  DEBUG((DEBUG_INFO, "Image size: %d\n", Image->Info.ImageSize));
+
   Image->Info.ImageCodeType = (EFI_MEMORY_TYPE)(Image->ImageContext.ImageCodeMemoryType);
   Image->Info.ImageDataType = (EFI_MEMORY_TYPE)(Image->ImageContext.ImageDataMemoryType);
   if ((Attribute & EFI_LOAD_PE_IMAGE_ATTRIBUTE_RUNTIME_REGISTRATION) != 0) {
@@ -1167,6 +1178,8 @@ CoreLoadImageCommon (
   ASSERT (gEfiCurrentTpl < TPL_NOTIFY);
   ParentImage = NULL;
 
+  DEBUG((DEBUG_INFO, "CoreLoadImageCommon BCWH\n"));
+
   //
   // The caller must pass in a valid ParentImageHandle
   //
@@ -1376,6 +1389,8 @@ CoreLoadImageCommon (
   //
   // Load the image.  If EntryPoint is Null, it will not be set.
   //
+  DEBUG((DEBUG_INFO, "Loading image at %p BCWH\n", (VOID *)DstBuffer));
+  DEBUG((DEBUG_INFO, "Entry point %p BCWH\n", (VOID *)EntryPoint));
   Status = CoreLoadPeImage (BootPolicy, &FHand, Image, DstBuffer, EntryPoint, Attribute);
   if (EFI_ERROR (Status)) {
     if ((Status == EFI_BUFFER_TOO_SMALL) || (Status == EFI_OUT_OF_RESOURCES)) {

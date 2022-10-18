@@ -178,6 +178,7 @@ QemuLoadKernelImage (
   //
   // Load the image. This should call back into the QEMU EFI loader file system.
   //
+      DEBUG((DEBUG_INFO, "Load kernel success BCWH!\n"));
   Status = gBS->LoadImage (
                   FALSE,                    // BootPolicy: exact match required
                   gImageHandle,             // ParentImageHandle
@@ -188,6 +189,7 @@ QemuLoadKernelImage (
                   );
   switch (Status) {
     case EFI_SUCCESS:
+      DEBUG((DEBUG_INFO, "Load kernel success BCWH!\n"));
       break;
 
     case EFI_SECURITY_VIOLATION:
@@ -374,6 +376,7 @@ QemuStartKernelImage (
   IN  OUT EFI_HANDLE  *ImageHandle
   )
 {
+  DEBUG((DEBUG_INFO, "Jump to kernel BCWH\n"));
   return gBS->StartImage (
                 *ImageHandle,
                 NULL,              // ExitDataSize
