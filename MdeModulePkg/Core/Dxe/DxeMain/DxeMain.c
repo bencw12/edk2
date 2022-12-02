@@ -6,6 +6,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
+#include <sys/io.h>
 #include "DxeMain.h"
 
 //
@@ -244,6 +245,11 @@ DxeMain (
   EFI_VECTOR_HANDOFF_INFO       *VectorInfo;
   VOID                          *EntryPoint;
 
+
+  //BCWH DXE MAIN
+  // outb(0x40, 0x80)
+  outb(0x22,0x80);
+  
   //
   // Setup the default exception handlers
   //

@@ -8,6 +8,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
+#include <sys/io.h>
 
 #include <PiPei.h>
 
@@ -757,6 +758,8 @@ SecCoreStartupWithStack (
   IA32_DESCRIPTOR       IdtDescriptor;
   UINT32                Index;
   volatile UINT8        *Table;
+
+  outb(0x20, 0x80);
 
  #if defined (TDX_GUEST_SUPPORTED)
   if (CcProbe () == CcGuestTypeIntelTdx) {

@@ -11,6 +11,7 @@ Copyright (c) 2004 - 2019, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
+#include <sys/io.h>
 
 #include "Bds.h"
 #include "Language.h"
@@ -695,6 +696,9 @@ BdsEntry (
   HotkeyTriggered = NULL;
   Status          = EFI_SUCCESS;
   BootSuccess     = FALSE;
+
+  //BCWH BDS ENTRY
+  outb(0x23, 0x80);
 
   //
   // Insert the performance probe

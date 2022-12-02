@@ -5,7 +5,7 @@ Copyright (c) 2006 - 2019, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
-
+#include <sys/io.h>
 #include "PeiMain.h"
 
 EFI_PEI_PPI_DESCRIPTOR  mMemoryDiscoveredPpi = {
@@ -178,6 +178,10 @@ PeiCore (
   EFI_HOB_HANDOFF_INFO_TABLE      *HandoffInformationTable;
   EFI_PEI_TEMPORARY_RAM_DONE_PPI  *TemporaryRamDonePpi;
   UINTN                           Index;
+
+
+  //BCWH PEI CORE MAIN
+  outb(0x21, 0x80);
 
   //
   // Retrieve context passed into PEI Core

@@ -5,6 +5,7 @@
 
 **/
 
+#include <sys/io.h>
 #include "SecMain.h"
 #include "SecFsp.h"
 
@@ -66,6 +67,9 @@ SecStartup (
   UINT64                ExceptionHandler;
   UINTN                 IdtSize;
 
+
+ //BCWH BEGIN SEC C CODE
+  outb(0x20, 0x80)
   //
   // Process all libraries constructor function linked to SecCore.
   //

@@ -5,6 +5,7 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
+#include <sys/io.h>
 
 #include "SecMain.h"
 
@@ -158,6 +159,9 @@ SecStartup (
   UINT32                Index;
   UINT32                PeiStackSize;
   EFI_STATUS            Status;
+
+  //BCWH BEGIN SEC C CODE
+  outb(0x20, 0x80)
 
   //
   // Report Status Code to indicate entering SEC core
