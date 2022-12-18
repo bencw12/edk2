@@ -28,6 +28,8 @@
 #include <Protocol/LoadFile2.h>
 #include <Protocol/SimpleFileSystem.h>
 
+#include <sys/io.h>
+
 //
 // Static data that hosts the fw_cfg blobs and serves file requests.
 //
@@ -1067,6 +1069,8 @@ QemuKernelLoaderFsDxeEntrypoint (
   //
   // Fetch all blobs. BCWH
   //
+
+  outb(0x24, 0x80);
   for (BlobType = 0; BlobType < KernelBlobTypeMax; ++BlobType) {
     CurrentBlob = &mKernelBlob[BlobType];
     Status      = FetchBlob (CurrentBlob);
@@ -1085,6 +1089,7 @@ QemuKernelLoaderFsDxeEntrypoint (
 
     mTotalBlobBytes += CurrentBlob->Size;
   }
+  outb(0x25, 0x80);
 
   KernelBlob = &mKernelBlob[KernelBlobTypeKernel];
 
